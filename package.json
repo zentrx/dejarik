@@ -1,0 +1,58 @@
+{
+  "name": "dejarik",
+  "private": true,
+  "description": "A Slack hook for Star Wars",
+  "scripts": {
+    "clean": "rimraf bin coverage",
+    "coveralls": "cat coverage/lcov.info | coveralls"
+    "precompile": "npm run clean",
+    "compile": "tsc",
+    "postinstall": "tsd reinstall --clean",
+    "lint": "find src test -name \"*.ts\" -exec tslint --format verbose {} +;",
+    "remap": "remap-istanbul --input coverage/coverage-final.json",
+    "prespec": "npm run compile -- --sourceMap",
+    "spec": "istanbul cover --report json jasmine JASMINE_CONFIG_PATH=jasmine.json",
+    "postspec": "parallelshell \"npm run remap -- --output coverage/lcov.info --type lcovonly\" \"npm run remap -- --output ${CIRCLE_ARTIFACTS-coverage/lcov-report} --type html\"",
+    "prestart": "npm run compile",
+    "start": "node bin/src/index.js",
+    "test": "parallelshell \"npm run lint\" \"npm run spec\"",
+    "tsd": "tsd"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/pspeter3/dejarik.git"
+  },
+  "keywords": [
+    "star",
+    "wars",
+    "heroku",
+    "typescript"
+  ],
+  "contributors": [
+    {
+      "name": "Phips Peter"
+    }
+  ],
+  "bugs": {
+    "url": "https://github.com/pspeter3/dejarik/issues"
+  },
+  "homepage": "https://github.com/pspeter3/dejarik#readme",
+  "dependencies": {
+    "request": "^2.67.0",
+    "tsd": "^0.6.5",
+    "typescript": "^1.7.5"
+  },
+  "devDependencies": {
+    "coveralls": "^2.11.6",
+    "istanbul": "^0.4.1",
+    "jasmine": "^2.4.1",
+    "parallelshell": "^2.0.0",
+    "remap-istanbul": "^0.5.1",
+    "rimraf": "^2.28",
+    "tslint": "^3.2.1"
+  },
+  "engines": {
+    "node": "5.3.0",
+    "npm": "3.3.12"
+  }
+}
